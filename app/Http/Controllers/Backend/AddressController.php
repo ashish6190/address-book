@@ -33,16 +33,24 @@ class AddressController extends Controller
 
     public function list(Request $request)
     {
-        $seconds = 300;
+        $seconds = 3;
         
         $contact = Cache::remember('contacts',$seconds, function() {
-            return $this->contact->orderBy('id','DESC')->get();
+            return $this->contact->with('cityname')->orderBy('id','DESC')->get();
         });
 
-        $contact = Cache::get('contacts');
-        
+        // $contact = Cache::get('contacts')->with('city');
+        // dd($contact[0]);
         return Datatables::of($contact)
         
+        ->addColumn('city',function($contact){
+            if(!empty($contact->cityname->name)){
+                return $contact->cityname->name;
+            }else{
+                return 'N/A';
+            }
+            
+        })
         ->addColumn('action', function ($contact) {
             // return '--';
             return '<a href="'. route('address.edit', $contact->slug) .'"><i class="fa fa-edit" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit Contact"></i></a>';
@@ -239,7 +247,7 @@ class AddressController extends Controller
     {
         $email     = Contact::where('email', $request->email)->first();
         $noChnage  = Contact::where('id', $request->id)->first();
-        
+
         if($request->has('id')){
             if (!empty($email)) {
                 if ($email->email == $noChnage->email) {

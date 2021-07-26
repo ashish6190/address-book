@@ -56,13 +56,13 @@
                         <table id="users-table" class="display table table-striped table-bordered" style="width:100%" >
                             <thead>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Name</th>
-                                    <th>Name</th>
-                                    <th>Category</th>
-                                    <th>Fee</th>
-                                    <th>Duration</th>
-                                    <th>Status</th>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Street</th>
+                                    <th>Zip-code</th>
+                                    <th>City</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -124,21 +124,14 @@
 @section('script')
 <script>
      
-     $(function () {
-   
-   var table = $('#users-table').DataTable({
-       processing: true,
-       serverSide: true,
-       "order": [],
-      "aaSorting": [],
-       ajax: {
-         url: "{{route('address.list')}}",
-         data: function (d) {
-               d.type = $('.searchType').val(),
-               d.search = $('input[type="search"]').val()
-           }
-       },
-       "columns": [
+     $(function() {
+    $('#users-table').DataTable({
+        processing: true,
+        serverSide: true,
+        "order": [],
+         "aaSorting": [],
+        ajax: '{!! route('address.list') !!}',
+        "columns": [
             {data: 'first_name', name: 'first_name'},
             {data: 'last_name', name: 'last_name'},
             {data: 'email', name: 'email'},
@@ -146,15 +139,12 @@
             {data: 'street', name: 'street'},
             {data: 'zipcode', name: 'zipcode'},
             {data: 'city', name: 'city'},
-            {data: 'action', name: 'action', orderable: false, searchable: false}        
-        ]
-   });
-  
-   $( "#filter" ).change(function() {
-       table.draw();
-   });
- 
- });
+            {data: 'action', name: 'action', orderable: false, searchable: false}      
+        ],
+        "aLengthMenu": [[25, 50, 75, -1], [25, 50, 75, "All"]],
+        "iDisplayLength": 50,
+    });
+});
 
 </script>
 @endsection

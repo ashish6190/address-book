@@ -24,13 +24,12 @@ class ContactFactory extends Factory
     {
         return [
             'first_name'  => $this->faker->name,
-            'last_name'   => $this->faker->name,
+            'last_name'   => Str::random(7),
             'slug'        => Str::slug($this->faker->name),
-            // 'profile_pic' => $this->faker->name,
             'email'       => $this->faker->unique()->safeEmail(),
-            'street'      => $this->faker->text,
-            // 'zipcode'     => $this->faker->text,
-            // 'city'        => $this->faker->name,
+            'street'      => Str::random(10),
+            'zipcode'     => Str::random(5),
+            'city'        => 676,
         ];
     }
 }

@@ -20,4 +20,9 @@ class Contact extends Model
             ]
         ];
     }
+
+    // city
+    public function cityname(){
+        return $this->HasOne('App\Models\City','id','city');
+    }
 }
