@@ -9,5 +9,6 @@
     <meta name="msapplication-tap-highlight" content="no">
     <link href="{{asset('/main.css')}}" rel="stylesheet">
     <link src="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-
+    <link src="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css" rel="stylesheet">
+    
     

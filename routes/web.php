@@ -17,5 +17,10 @@ Route::get('/', function () {
 }); 
 
 Route::namespace('Backend')->group(function () {
+
+    Route::post('address/email/checkexists', 'AddressController@emailCheckexists')->name('user.email');
+    Route::get('address/list', 'AddressController@list')->name('address.list');
+    Route::get('address/{slug}/edit', 'AddressController@edit')->name('address.edit');
+    Route::post('address/{slug}/edit', 'AddressController@update')->name('address.update');
     Route::resource('address', 'AddressController');
 });

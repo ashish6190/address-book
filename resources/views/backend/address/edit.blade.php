@@ -10,59 +10,127 @@
     color: red !important;
 }
 </style>
-             <div class="app-main__outer">
-            <div class="app-main__inner">
-                <div class="main-card mb-3 card">
-                    <div class="card-body">
-                        <h5 class="card-title">Edit Course</h5>
-                <form id="user-form" method="POST" action="#" enctype="multipart/form-data">
+                <div class="app-main__outer">
+                    <div class="app-main__inner">
+                       <div class="main-card mb-3 card">
+                            <div class="card-body">
+                                <h5 class="card-title">Edit Address Book</h5>
+                <form id="address-form" method="POST" action="#" enctype="multipart/form-data">
                     @csrf
                     <div class="row">
-                    <input type="hidden" id="course_id" name="course_id" value="">
+                        <input type="hidden" name="contact_id" value="{{$contact->id}}">
                         <div class="col-md-6 form-group mb-3" >
-                            <label for="firstName2">Name</label>
-                            <input type="text" class="form-control form-control-rounded" value="" id="name_en" name="name_en" placeholder="Enter category name">
-                        </div>
-
-                        <div class="col-md-6 form-group mb-3" style="text-align: right;">
-                            <label style=" text-align: right;" for="firstName2 ">اسم</label>
-                            <input type="text" class="form-control form-control-rounded" style="text-align: right;" value="" id="name_ar" name="name_ar" placeholder="أدخل اسم الفئة باللغة العربية">
+                            <label for="firstName2">First Name</label>
+                            <input type="text" class="form-control form-control-rounded" value="{{$contact->first_name}}" id="first_name" name="first_name" placeholder="Enter first name">
+                            @error('first_name')
+                            <label id="label-error" class="error" for="first_name">{{ $message }}</label>
+                            @enderror
                         </div>
 
                         <div class="col-md-6 form-group mb-3" >
-                            <label for="firstName2">Category</label>
-                            <select class="form-control form-control-rounded" id="category_id" name="category_id" placeholder="Enter category name">
-                                <option value="">Select Category</option>
-                               @foreach($categories as $categry)
-                                <option value="{{$categry->id}}" {{$categry->id == $course->category_id  ? 'selected' : ''}}>{{$categry->name_en}}</option>
-                               @endforeach
+                            <label for="firstName2">Last Name</label>
+                            <input type="text" class="form-control form-control-rounded" value="{{$contact->last_name}}" id="last_name" name="last_name" placeholder="Enter last name">
+                            @error('first_name')
+                            <label id="label-error" class="error" for="first_name">{{ $last_name }}</label>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-6 form-group mb-3" >
+                        <label for="firstName2">Profile Pic (150 x 150)</label>
+                            <input type="file" class="form-control form-control-rounded"  id="profile_pic" name="profile_pic" placeholder="Upload your profile pic">
+                            @error('profile_pic')
+                            <label id="label-error" class="error" for="first_name">{{ $message }}</label>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-6 form-group mb-3" >
+                            <label for="firstName2">Email</label>
+                            <input type="email" class="form-control form-control-rounded" value="{{$contact->email}}" id="email" name="email" placeholder="Enter your email">
+                            @error('first_name')
+                            <label id="label-error" class="error" for="first_name">{{ $message }}</label>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-6 form-group mb-3" >
+                            <label for="firstName2">Phone</label>
+                            <input type="number"  class="form-control form-control-rounded" value="{{$contact->phone}}" id="phone" name="phone" placeholder="Enter your phone number">
+                            @error('phone')
+                            <label id="label-error" class="error" for="first_name">{{ $message }}</label>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-6 form-group mb-3" >
+                            <label for="firstName2">Street</label>
+                            <input type="text" class="form-control form-control-rounded" value="{{$contact->street}}" id="street" name="street" placeholder="Enter street">
+                            @error('street')
+                            <label id="label-error" class="error" for="first_name">{{ $message }}</label>
+                            @enderror
+                        </div>
+                        
+                        <div class="col-md-6 form-group mb-3" >
+                            <label for="firstName2">Zip-Code</label>
+                            <input type="number" class="form-control form-control-rounded" value="{{$contact->zipcode}}" id="zipcode" name="zipcode" placeholder="Enter zip-code">
+                            @error('zipcode')
+                            <label id="label-error" class="error" for="first_name">{{ $message }}</label>
+                            @enderror
+                        </div>
+                        <div class="col-md-6 form-group mb-3" >
+                        <label for="firstName2">City</label>
+                            <select class="form-control form-control-rounded"  id="city" name="city" placeholder="Enter your city name">
+                                <option value="">Select City</option>
+                                @foreach($cities as $city)
+                                <option value="{{$city->id}}" @if($contact->city == $city->id) selected @endif>{{$city->name}}</option>
+                                @endforeach
                             </select>
-                        </div>
-
-                        <div class="col-md-6 form-group mb-3" >
-                            <label for="firstName2">Duration (in-months)</label>
-                            <input type="number" min="1" max="120" class="form-control form-control-rounded" value="{{$course->duration}}" id="duration" name="duration" placeholder="Enter category name">
-                        </div>
-
-                        <div class="col-md-6 form-group mb-3" >
-                            <label for="firstName2">Fees (KWD)</label>
-                            <input type="number" min="1" step=".001" max="100000000" class="form-control form-control-rounded" value="{{$course->fee}}" id="fee" name="fee" placeholder="Enter category name">
-                        </div>
-
-                        <div class="col-md-6 form-group mb-3" >
-                            <label for="firstName2">Location</label>
-                            <input type="text" class="form-control form-control-rounded" id="location" name="location" value="{{$course->location}}" placeholder="Enter category name">
-                        </div>
-
+                            @error('city')
+                            <label id="label-error" class="error" for="first_name">{{ $message }}</label>
+                            @enderror
+                            </div>
                         <div class="col-md-12">
-                            <button type="" id="btn-submit" class="btn btn-primary">Submit</button>
+                            <button type="" id="btn-submit" class="btn btn-primary ">Submit</button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-
+    <div class="app-wrapper-footer">
+                        <div class="app-footer">
+                            <div class="app-footer__inner">
+                                <div class="app-footer-left">
+                                    <ul class="nav">
+                                        <li class="nav-item">
+                                            <a href="javascript:void(0);" class="nav-link">
+                                                Footer Link 1
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="javascript:void(0);" class="nav-link">
+                                                Footer Link 2
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="app-footer-right">
+                                    <ul class="nav">
+                                        <li class="nav-item">
+                                            <a href="javascript:void(0);" class="nav-link">
+                                                Footer Link 3
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="javascript:void(0);" class="nav-link">
+                                                <div class="badge badge-success mr-1 ml-0">
+                                                    <small>NEW</small>
+                                                </div>
+                                                Footer Link 4
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 </div>
 @endsection
 @section('script')
@@ -71,111 +139,101 @@
     var ajax_req;
 
     $(document).ready(function(){     
-    
-        $("#user-form").validate({
+        
+        $("#address-form").validate({
             rules: {
                 
             
-                name_en: {
+                first_name: {
                     required              : true,
                     normalizer: function( value ) {
                         return $.trim( value );
                     },
                 },
-                name_ar: {
+                last_name: {
                     required              : true,
                     normalizer: function( value ) {
                         return $.trim( value );
                     },
                 },
-                fee: {
+                
+                email: {
+                required: true,
+                email: true,
+                remote: {
+                            url: "{{route('user.email')}}",
+                            type: "post",
+                            data: {
+                                "_token": "{{ csrf_token() }}",
+                                'id': "{{$contact->id}}"
+                                }
+                        }
+                },
+                phone: {
+                    required              : true,
+                    maxlength             : 10,
+                    minlength             : 10,
+                    normalizer: function( value ) {
+                        return $.trim( value );
+                    },
+                },
+                street: {
                     required              : true,
                     normalizer: function( value ) {
                         return $.trim( value );
                     },
                 },
-                duration: {
+                zipcode: {
                     required              : true,
                     normalizer: function( value ) {
                         return $.trim( value );
                     },
                 },
-                location: {
+                city: {
                     required              : true,
                     normalizer: function( value ) {
                         return $.trim( value );
                     },
                 },
-                category_id: {
-                    required              : true,
-                    normalizer: function( value ) {
-                        return $.trim( value );
-                    },
-                }
                 
             },
             messages: {
-                name_en   :  {
-                    required              : "Please enter category name",
+                first_name   :  {
+                    required              : "Please enter first name",
                 },
-                name_ar   :  {
-                    required              : "الرجاء إدخال اسم الفئة",
+               
+                last_name   :  {
+                    required              : "Please enter last name",
                 },
-                fee   :  {
-                    required              : "Please enter course fee",
+                
+                email   :  {
+                    required              : "Please enter email",
+                    email                  : "Please enter a valid email address.",
+				    remote                : "Email already in use!"
                 },
-                duration   :  {
-                    required              : "Please enter course duration",
+                phone   :  {
+                    required              : "Please enter phone",
+                    maxlength              : "Please enter your 10 digit numbers.",
                 },
-                location   :  {
-                    required              : "Please enter course location",
+                street   :  {
+                    required              : "Please enter street",
                 },
-                category_id   :  {
-                    required              : "Please select course category",
+                zipcode   :  {
+                    required              : "Please enter zipcode",
+                },
+                city   :  {
+                    required              : "Please select city",
                 },
                 
             },
-            submitHandler: function(form,event) {
-                $('#processing').css("display", "block");
-                $("#btn-submit").attr('disabled', 'disabled');
-                
-                var formSubmit = fetchRequest("{{route('courses.update.store')}}");
-                
-                var formData = new FormData(form);
-                formSubmit.setBody(formData);
-                formSubmit.post().then(function (response) {
-
-                    if (response.status === 200) {
-                        $('#processing').css("display", "none")
-                        // $('#user-form').trigger("reset");
-                        $("#btn-submit").attr('disabled', 'disabled');
-                        toastr.success("Course successfully updated", "Success", {
-                            showMethod: "slideDown",
-                            hideMethod: "slideUp",
-                            timeOut: 2e3
-                        })
-                        setTimeout(function () {
-                            window.location.href = "{{route('courses.index')}}"; //will redirect to your blog page (an ex: blog.html)
-                        }, 2000); 
-   
-                    }else if(response.status === 422){
-                        response.json().then((errors) => { 
-                            console.log(errors.errors);
-                        });
-                    }else{
-                        toastr.error("Something went wrong", "error", {
-                            showMethod: "slideDown",
-                            hideMethod: "slideUp",
-                            timeOut: 2e3
-                        })
-                    }
-                });
-            }
         });
 
     });
+
+    $(document).ready(function() {
+            $('input[type="file"]').change(function() {
+                $('#label-error').hide();
+            });
+        });
 </script>
-<script src="{{ asset('js/jquery-3.3.1.min.js') }}"></script>
-<script src="{{ asset('js/jquery.validate.min.js') }}"></script>
-<script src="{{ asset('js/parsley.js') }}"></script>
 @endsection

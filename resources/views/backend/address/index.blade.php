@@ -3,6 +3,16 @@
 
 <div class="app-main__outer">
                     <div class="app-main__inner">
+                        @if (\Session::has('success'))
+                        <div class="alert alert-success mb-2">
+                        <p>{{ \Session::get('success') }}</p>
+                            </div>
+                        @endif
+                        @if (\Session::has('failure'))
+                            <div class="alert alert-danger mb-2">
+                            <p>{{ \Session::get('failure') }}</p>
+                            </div>
+                        @endif
                     <div class="app-page-title">
                             <div class="page-title-wrapper">
                                 <div class="page-title-heading">
@@ -47,7 +57,8 @@
                             <thead>
                                 <tr>
                                     <th>Name</th>
-                                    <th style="text-align:right;">اسم</th>
+                                    <th>Name</th>
+                                    <th>Name</th>
                                     <th>Category</th>
                                     <th>Fee</th>
                                     <th>Duration</th>
@@ -111,10 +122,6 @@
 @endsection
 
 @section('script')
-<script src="{{ asset('backend_assets/js/vendor/datatables.min.js') }}"></script>
-<script src="{{ asset('backend_assets/js/datatables.script.js') }}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
 <script>
      
      $(function () {
@@ -125,20 +132,20 @@
        "order": [],
       "aaSorting": [],
        ajax: {
-         url: "#",
+         url: "{{route('address.list')}}",
          data: function (d) {
                d.type = $('.searchType').val(),
                d.search = $('input[type="search"]').val()
            }
        },
        "columns": [
-            {data: 'name_en', name: 'name_en'},
-            {data: 'name_ar', name: 'name_ar', className: "text-right"},
-            {data: 'category', name: 'category'},
-            {data: 'fee', name: 'fee'},
-            {data: 'duration', name: 'duration'},
-            // {data: 'image', name: 'image'},
-            {data: 'status', name: 'status'},
+            {data: 'first_name', name: 'first_name'},
+            {data: 'last_name', name: 'last_name'},
+            {data: 'email', name: 'email'},
+            {data: 'phone', name: 'phone'},
+            {data: 'street', name: 'street'},
+            {data: 'zipcode', name: 'zipcode'},
+            {data: 'city', name: 'city'},
             {data: 'action', name: 'action', orderable: false, searchable: false}        
         ]
    });
@@ -150,84 +157,4 @@
  });
 
 </script>
-
-<script type="text/javascript">
-    function changeStatus(event,id,statusId){
-        var stateText = (statusId == 0) ? 'In-active' : 'Active';
-        swal({
-        title: 'Do you want change status to '+stateText+'?',
-        type:  "warning",
-        showCancelButton: true,
-        confirmButtonColor: '#DD6B55',
-        confirmButtonText: 'Yes, I am sure!',
-        cancelButtonText: "No, cancel it!",
-        closeOnConfirm: false,
-        closeOnCancel: false
-    },
-    function(isConfirm){
-    if (isConfirm){
-        //    console.log("done");
-            $.ajax({
-                type:'POST',
-                url:"#",
-                data:{
-                    "_token"   :  "{{ csrf_token() }}",
-                        id     :  id,
-                        status :  statusId,
-                        },
-                    success:function(data) {
-                    swal('Success','course status successfully changed');
-                    // timeout delay
-                    $(this).delay(2000).queue(function() {
-                    var table = $('#users-table').DataTable();
-                    table.ajax.reload();
-                        });
-                }
-                });
-        } else {
-            swal("change status operation failed!");
-        }
-    });
-    };
-
-    // approval course
-    function changeApproval(event,id,statusId){
-        var stateText = (statusId == 0) ? 'Disapproved' : 'Approved';
-        swal({
-        title: 'Do you want change status to '+stateText+'?',
-        type:  "warning",
-        showCancelButton: true,
-        confirmButtonColor: '#DD6B55',
-        confirmButtonText: 'Yes, I am sure!',
-        cancelButtonText: "No, cancel it!",
-        closeOnConfirm: false,
-        closeOnCancel: false
-    },
-    function(isConfirm){
-    if (isConfirm){
-        //    console.log("done");
-            $.ajax({
-                type:'POST',
-                url:"#",
-                data:{
-                    "_token"   :  "{{ csrf_token() }}",
-                        id     :  id,
-                        status :  statusId,
-                        },
-                    success:function(data) {
-                    swal('Success','course approved successfully');
-                    // timeout delay
-                    $(this).delay(2000).queue(function() {
-                    var table = $('#users-table').DataTable();
-                    table.ajax.reload();
-                        });
-                }
-                });
-        } else {
-            swal("change status operation failed!");
-        }
-    });
-    };
- </script>
-
 @endsection

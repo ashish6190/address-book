@@ -14,51 +14,76 @@
                     <div class="app-main__inner">
                        <div class="main-card mb-3 card">
                             <div class="card-body">
-                                <h5 class="card-title">Add Address</h5>
-                <form id="address-form" method="POST" action="#" enctype="multipart/form-data">
+                                <h5 class="card-title">Add Address Book</h5>
+                <form id="address-form" method="POST" action="{{route('address.store')}}" enctype="multipart/form-data">
                     @csrf
                     <div class="row">
                         <div class="col-md-6 form-group mb-3" >
                             <label for="firstName2">First Name</label>
-                            <input type="text" class="form-control form-control-rounded" id="first_name" name="first_name" placeholder="Enter first name">
+                            <input type="text" class="form-control form-control-rounded" value="{{ old('first_name') }}" id="first_name" name="first_name" placeholder="Enter first name">
+                            @error('first_name')
+                            <label id="label-error" class="error" for="first_name">{{ $message }}</label>
+                            @enderror
                         </div>
 
                         <div class="col-md-6 form-group mb-3" >
-                            <label for="firstName2">First Name</label>
-                            <input type="text" class="form-control form-control-rounded" id="last_name" name="last_name" placeholder="Enter last name">
+                            <label for="firstName2">Last Name</label>
+                            <input type="text" class="form-control form-control-rounded" value="{{ old('last_name') }}" id="last_name" name="last_name" placeholder="Enter last name">
+                            @error('first_name')
+                            <label id="label-error" class="error" for="first_name">{{ $last_name }}</label>
+                            @enderror
                         </div>
 
                         <div class="col-md-6 form-group mb-3" >
-                        <label for="firstName2">Profile Pic</label>
-                            <input type="file" class="form-control form-control-rounded" id="profile_pic" name="profile_pic" placeholder="Upload your profile pic">
+                        <label for="firstName2">Profile Pic (150 x 150)</label>
+                            <input type="file" class="form-control form-control-rounded"  id="profile_pic" name="profile_pic" placeholder="Upload your profile pic">
+                            @error('profile_pic')
+                            <label id="label-error" class="error" for="first_name">{{ $message }}</label>
+                            @enderror
                         </div>
 
                         <div class="col-md-6 form-group mb-3" >
                             <label for="firstName2">Email</label>
-                            <input type="email" class="form-control form-control-rounded" id="email" name="email" placeholder="Enter your email">
+                            <input type="email" class="form-control form-control-rounded" value="{{ old('email') }}" id="email" name="email" placeholder="Enter your email">
+                            @error('first_name')
+                            <label id="label-error" class="error" for="first_name">{{ $message }}</label>
+                            @enderror
                         </div>
 
                         <div class="col-md-6 form-group mb-3" >
                             <label for="firstName2">Phone</label>
-                            <input type="number"  class="form-control form-control-rounded" id="phone" name="phone" placeholder="Enter your phone number">
+                            <input type="number"  class="form-control form-control-rounded" value="{{ old('phone') }}" id="phone" name="phone" placeholder="Enter your phone number">
+                            @error('phone')
+                            <label id="label-error" class="error" for="first_name">{{ $message }}</label>
+                            @enderror
                         </div>
 
                         <div class="col-md-6 form-group mb-3" >
                             <label for="firstName2">Street</label>
-                            <input type="text" class="form-control form-control-rounded" id="street" name="street" placeholder="Enter street">
+                            <input type="text" class="form-control form-control-rounded" value="{{ old('street') }}" id="street" name="street" placeholder="Enter street">
+                            @error('street')
+                            <label id="label-error" class="error" for="first_name">{{ $message }}</label>
+                            @enderror
                         </div>
                         
                         <div class="col-md-6 form-group mb-3" >
                             <label for="firstName2">Zip-Code</label>
-                            <input type="text" class="form-control form-control-rounded" id="zipcode" name="zipcode" placeholder="Enter zip-code">
+                            <input type="number" class="form-control form-control-rounded" value="{{ old('zipcode') }}" id="zipcode" name="zipcode" placeholder="Enter zip-code">
+                            @error('zipcode')
+                            <label id="label-error" class="error" for="first_name">{{ $message }}</label>
+                            @enderror
                         </div>
                         <div class="col-md-6 form-group mb-3" >
                         <label for="firstName2">City</label>
-                            <select class="form-control form-control-rounded" id="city" name="city" placeholder="Enter your city name">
+                            <select class="form-control form-control-rounded"  id="city" name="city" placeholder="Enter your city name">
                                 <option value="">Select City</option>
-                               
-                                <option value="1">Varansai</option>
+                                @foreach($cities as $city)
+                                <option value="{{$city->id}}">{{$city->name}}</option>
+                                @endforeach
                             </select>
+                            @error('city')
+                            <label id="label-error" class="error" for="first_name">{{ $message }}</label>
+                            @enderror
                             </div>
                         <div class="col-md-12">
                             <button type="" id="btn-submit" class="btn btn-primary ">Submit</button>
@@ -113,105 +138,110 @@
     var ajax_req;
 
     $(document).ready(function(){     
-    
+        
         $("#address-form").validate({
             rules: {
                 
             
-                name_en: {
+                first_name: {
                     required              : true,
                     normalizer: function( value ) {
                         return $.trim( value );
                     },
                 },
-                name_ar: {
+                last_name: {
                     required              : true,
                     normalizer: function( value ) {
                         return $.trim( value );
                     },
                 },
-                fee: {
+                profile_pic: {
+                    required              : true,
+                    extension: "png|jpg|jpeg|webp|gif|svg",
+                    
+                    normalizer: function( value ) {
+                        return $.trim( value );
+                    },
+                },
+                email: {
+                required: true,
+                email: true,
+                remote: {
+                            url: "{{route('user.email')}}",
+                            type: "post",
+                            data: {
+                                "_token": "{{ csrf_token() }}",
+                                }
+                        }
+                },
+                phone: {
+                    required              : true,
+                    maxlength             : 10,
+                    minlength             : 10,
+                    normalizer: function( value ) {
+                        return $.trim( value );
+                    },
+                },
+                street: {
                     required              : true,
                     normalizer: function( value ) {
                         return $.trim( value );
                     },
                 },
-                duration: {
+                zipcode: {
                     required              : true,
                     normalizer: function( value ) {
                         return $.trim( value );
                     },
                 },
-                location: {
+                city: {
                     required              : true,
                     normalizer: function( value ) {
                         return $.trim( value );
                     },
                 },
-                category_id: {
-                    required              : true,
-                    normalizer: function( value ) {
-                        return $.trim( value );
-                    },
-                }
                 
             },
             messages: {
-                name_en   :  {
-                    required              : "Please enter category name",
+                first_name   :  {
+                    required              : "Please enter first name",
                 },
-                name_ar   :  {
-                    required              : "الرجاء إدخال اسم الفئة",
+               
+                last_name   :  {
+                    required              : "Please enter last name",
                 },
-                fee   :  {
-                    required              : "Please enter course fee",
+                profile_pic   :  {
+                    required              : "Please choose profile picture",
+                    extension: "Only image type jpg/png/jpeg/gif/svg/webp is allowed"
                 },
-                duration   :  {
-                    required              : "Please enter course duration",
+                email   :  {
+                    required              : "Please enter email",
+                    email                  : "Please enter a valid email address.",
+				    remote                : "Email already in use!"
                 },
-                location   :  {
-                    required              : "Please enter course location",
+                phone   :  {
+                    required              : "Please enter phone",
+                    maxlength              : "Please enter your 10 digit numbers.",
                 },
-                category_id   :  {
-                    required              : "Please select course category",
+                street   :  {
+                    required              : "Please enter street",
+                },
+                zipcode   :  {
+                    required              : "Please enter zipcode",
+                },
+                city   :  {
+                    required              : "Please select city",
                 },
                 
             },
-            submitHandler: function(form,event) {
-                $('#processing').css("display", "block");
-                $("#btn-submit").attr('disabled', 'disabled');
-                
-                var formSubmit = fetchRequest("{{route('address.store')}}");
-                
-                var formData = new FormData(form);
-                formSubmit.setBody(formData);
-                formSubmit.post().then(function (response) {
-
-                    if (response.status === 200) {
-                        $('#processing').css("display", "none")
-                        $('#user-form').trigger("reset");
-                        $("#btn-submit").removeAttr('disabled', 'disabled');
-                        toastr.success("Course successfully created", "Success", {
-                            showMethod: "slideDown",
-                            hideMethod: "slideUp",
-                            timeOut: 2e3
-                        })
-                        setTimeout(function () {
-                            window.location.href = "{{route('address.index')}}"; //will redirect to your blog page (an ex: blog.html)
-                        }, 2000); 
-   
-                    }else if(response.status === 422){
-                        response.json().then((errors) => {
-                            console.log(errors.errors);
-                        });
-                    }
-                });
-            }
         });
 
     });
+
+    $(document).ready(function() {
+            $('input[type="file"]').change(function() {
+                $('#label-error').hide();
+            });
+        });
 </script>
-<script src="{{ asset('js/jquery-3.3.1.min.js') }}"></script>
-<script src="{{ asset('js/jquery.validate.min.js') }}"></script>
-<script src="{{ asset('js/parsley.js') }}"></script>
 @endsection
