@@ -53,6 +53,13 @@
                                                 List
                                             </a>
                                         </li>
+
+                                        <li>
+                                            <a href="{{route('address.activity')}}">
+                                                <i class="metismenu-icon"></i>
+                                                Activity Log
+                                            </a>
+                                        </li>
                                     </ul>
                                 </li>
                             </ul>

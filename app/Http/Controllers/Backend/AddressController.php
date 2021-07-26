@@ -10,6 +10,7 @@ use Storage;
 use Illuminate\Support\Str;
 use Cviebrock\EloquentSluggable\Services\SlugService;
 use Cache;
+use DB;
 use Illuminate\Support\Facades\Redis;
 
 use Yajra\Datatables\Datatables;
@@ -266,5 +267,19 @@ class AddressController extends Controller
             }
         }
        
+    }
+
+    // Activity Log
+    public function activity()
+    {
+        return view('backend.address.viewlog');
+    }
+
+    public function activitylog(Request $request)
+    {
+        $activitylog = DB::table('activity_log');
+        return Datatables::of($activitylog)
+        
+        ->make(true);
     }
 }
