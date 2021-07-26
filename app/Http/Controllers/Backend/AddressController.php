@@ -9,6 +9,7 @@ use App\Models\City;
 use Storage;
 use Illuminate\Support\Str;
 use Cviebrock\EloquentSluggable\Services\SlugService;
+use Cache;
 
 use Yajra\Datatables\Datatables;
 
@@ -31,8 +32,11 @@ class AddressController extends Controller
 
     public function list(Request $request)
     {
-        $contact = $this->contact->orderBy('id','DESC');
 
+        $seconds = 300;
+        $contact = Cache::remember('contacts', $seconds, function() { 
+            return $this->contact->orderBy('id','DESC')->get();
+        });
         return Datatables::of($contact)
         
         ->addColumn('action', function ($contact) {
@@ -49,7 +53,10 @@ class AddressController extends Controller
      */
     public function create()
     {
-        $cities = $this->city->get();
+        $seconds = 300;
+        $cities = Cache::remember('contacts', $seconds, function() { 
+            return $this->city->get();
+        });
         return view('backend.address.add',compact('cities'));
     }
 
@@ -141,7 +148,10 @@ class AddressController extends Controller
     {
         $contact = $this->contact->where('slug', $slug)
         ->first();
-        $cities = $this->city->get();
+        $seconds = 300;
+        $cities = Cache::remember('contacts', $seconds, function() { 
+            return $this->city->get();
+        });
         return view('backend.address.edit',compact('contact','cities'));
     }
 
