@@ -240,14 +240,23 @@ class AddressController extends Controller
         $email     = Contact::where('email', $request->email)->first();
         $noChnage  = Contact::where('id', $request->id)->first();
         
-        if (!empty($email)) {
-            if ($email->email == $noChnage->email) {
-                echo 'true';
+        if($request->has('id')){
+            if (!empty($email)) {
+                if ($email->email == $noChnage->email) {
+                    echo 'true';
+                } else {
+                    echo 'false';
+                }
             } else {
-                echo 'false';
+                echo 'true';
             }
-        } else {
-            echo 'true';
+        }else{
+            if (!empty($email)) {
+                echo 'false';
+            } else {
+                echo 'true';
+            }
         }
+       
     }
 }
